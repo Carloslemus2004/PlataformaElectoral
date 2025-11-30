@@ -1,16 +1,3 @@
-[
-  {
-    "centro": "Escuela Lempira",
-    "mesa": "001",
-    "departamento": "Lempira",
-    "municipio": "Gracias",
-    "votantes": 320
-  },
-  {
-    "centro": "Instituto Técnico",
-    "mesa": "002",
-    "departamento": "Lempira",
-    "municipio": "La Campa",
-    "votantes": 285
-  }
-]
+jrv_id,municipio,centro,mesario
+J001,Gracias,Escuela Central,Ana Pérez
+J002,La Campa,Instituto Lempira,Luis Díaz
