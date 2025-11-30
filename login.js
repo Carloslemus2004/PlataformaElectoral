@@ -4,6 +4,11 @@ const credenciales = [
 ];
 
 function validar(usuario, clave) {
+  const user = credenciales.find(u => u.user === usuario);
+  return user && user.pass === clave;
+}
+
+function validar(usuario, clave) {
   return credenciales.some(c => c.user === usuario && c.pass === clave);
 }
 
