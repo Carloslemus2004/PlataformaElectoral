@@ -1,0 +1,16 @@
+[
+  {
+    "centro": "Escuela Lempira",
+    "mesa": "001",
+    "departamento": "Lempira",
+    "municipio": "Gracias",
+    "votantes": 320
+  },
+  {
+    "centro": "Instituto Técnico",
+    "mesa": "002",
+    "departamento": "Lempira",
+    "municipio": "La Campa",
+    "votantes": 285
+  }
+]
