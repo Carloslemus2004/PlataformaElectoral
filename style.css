@@ -1,8 +1,11 @@
 :root {
-  --bg: #0f172a;
-  --card: #111827;
-  --text: #e5e7eb;
-  --muted: #94a3b8;
+  --bg: #0d1b2a;         /* fondo general */
+  --card: #1b263b;       /* tarjetas y secciones */
+  --text: #ffffff;       /* texto principal */
+  --accent: #c62828;     /* botones y alertas */
+  --ok: #1a7f37;         /* mensajes de éxito */
+  --muted: #cbd5e1;      /* texto secundario */
+}
   --accent: #ef4444;
   --accent-2: #22c55e;
 }
