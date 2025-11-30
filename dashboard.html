@@ -2,14 +2,14 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <title>Panel — Plataforma Electoral</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Panel - Plataforma Electoral</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
   <header class="app-header">
-    <img src="logo.png" alt="Logo Lempira 2025" class="logo">
+    <img src="assets/img/logo.png" alt="Logo">
     <h1>Panel de control</h1>
   </header>
 
@@ -34,34 +34,50 @@
   </footer>
 
   <script>
-  async function cargarDatos() {
-    const jrvs = await fetch('data/jrv.json').then(r => r.json());
-    const candidatos = await fetch('data/candidatos.json').then(r => r.json());
-    const resultados = await fetch('data/resultados.json').then(r => r.json());
+    async function cargarDatos() {
+      const jrvs = await fetch('data/jrv.json').then(r => r.json());
+      const candidatos = await fetch('data/candidatos.json').then(r => r.json());
+      const resultados = await fetch('data/resultados.json').then(r => r.json());
 
-    const tablero = document.getElementById('tablero');
-    tablero.innerHTML = '';
+      const tablero = document.getElementById('tablero');
+      tablero.innerHTML = '';
 
-    jrvs.forEach(jrv => {
-      const div = document.createElement('div');
-      div.className = 'card';
-      div.innerHTML = `
-        <h3>${jrv.jrv_id} — ${jrv.municipio}</h3>
-        <p><strong>Centro:</strong> ${jrv.centro}</p>
-        <p><strong>Mesario:</strong> ${jrv.mesario}</p>
-        <ul>
-          ${candidatos.map(c => {
-            const resultado = resultados.find(r => r.jrv_id === jrv.jrv_id && r.candidato_id === c.id);
-            const votos = resultado?.votos ?? 0;
-            return `<li>${c.nombre}: <strong>${votos}</strong> votos</li>`;
-          }).join('')}
-        </ul>
-      `;
-      tablero.appendChild(div);
-    });
-  }
+      jrvs.forEach(jrv => {
+        const div = document.createElement('div');
+        div.className = 'card';
+        div.innerHTML = `
+          <h3>${jrv.jrv_id} — ${jrv.municipio}</h3>
+          <p><strong>Centro:</strong> ${jrv.centro}</p>
+          <p><strong>Mesario:</strong> ${jrv.mesario}</p>
+          <ul>
+            ${candidatos.map(c => {
+              const resultado = resultados.find(r => r.jrv_id === jrv.jrv_id && r.candidato_id === c.id);
+              const votos = resultado?.votos ?? 0;
+              return `<li>${c.nombre}: <strong>${votos}</strong> votos</li>`;
+            }).join('')}
+          </ul>
+        `;
+        tablero.appendChild(div);
+      });
 
-  cargarDatos();
+      // Totales por candidato
+      const totales = {};
+      candidatos.forEach(c => totales[c.id] = 0);
+      resultados.forEach(r => {
+        if (totales[r.candidato_id] !== undefined) {
+          totales[r.candidato_id] += r.votos || 0;
+        }
+      });
+
+      const resumen = document.createElement('section');
+      resumen.className = 'card';
+      resumen.innerHTML = `<h2>Totales por candidato</h2><ul>${
+        candidatos.map(c => `<li>${c.nombre}: <strong>${totales[c.id]}</strong> votos</li>`).join('')
+      }</ul>`;
+      tablero.appendChild(resumen);
+    }
+
+    cargarDatos();
   </script>
 </body>
 </html>
