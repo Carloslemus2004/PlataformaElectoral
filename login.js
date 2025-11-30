@@ -8,36 +8,32 @@ function validar(usuario, clave) {
   return user && user.pass === clave;
 }
 
-function validar(usuario, clave) {
-  return credenciales.some(c => c.user === usuario && c.pass === clave);
-}
-
 function mostrar(mensaje, tipo = 'info') {
   const msg = document.getElementById('msg');
   msg.textContent = mensaje;
-  msg.style.color = tipo === 'ok' ? '#22c55e' : (tipo === 'error' ? '#ef4444' : '#94a3b8');
+  msg.style.color = tipo === 'ok' ? '#2255ce' : 'red';
 }
 
 function init() {
   const btn = document.getElementById('btnEntrar');
   btn.addEventListener('click', () => {
-    const usuario = document.getElementById('usuario').value.trim();
-    const clave = document.getElementById('clave').value.trim();
+    const usuario = document.getElementById('usuario').value;
+    const clave = document.getElementById('clave').value;
 
     if (!usuario || !clave) {
-      mostrar('Ingresa usuario y contraseña.', 'error');
+      mostrar('Ingresa usuario y contraseña.');
       return;
     }
+
     if (validar(usuario, clave)) {
-  mostrar('Acceso concedido. Cargando panel...', 'ok');
-  setTimeout(() => {
-    window.location.href = 'dashboard.html';
-  }, 600);
-    }
+      mostrar('Acceso concedido. Cargando panel...', 'ok');
+      setTimeout(() => {
+        window.location.href = 'dashboard.html';
+      }, 1500);
     } else {
-      mostrar('Credenciales inválidas.', 'error');
+      mostrar('Credenciales incorrectas.');
     }
   });
 }
 
-document.addEventListener('DOMContentLoaded', init);
+window.onload = init;
