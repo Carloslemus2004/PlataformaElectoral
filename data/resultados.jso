@@ -1,0 +1,6 @@
+[
+  { "jrv_id": "J001", "candidato_id": "C1", "votos": 123 },
+  { "jrv_id": "J001", "candidato_id": "C2", "votos": 98 },
+  { "jrv_id": "J002", "candidato_id": "C1", "votos": 87 },
+  { "jrv_id": "J002", "candidato_id": "C2", "votos": 110 }
+]
