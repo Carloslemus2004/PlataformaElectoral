@@ -1,99 +1,74 @@
-:root {
-  --bg: #0d1b2a;         /* fondo general */
-  --card: #1b263b;       /* tarjetas y secciones */
-  --text: #ffffff;       /* texto principal */
-  --accent: #c62828;     /* botones y alertas */
-  --ok: #1a7f37;         /* mensajes de éxito */
-  --muted: #cbd5e1;      /* texto secundario */
-}
-  --accent: #ef4444;
-  --accent-2: #22c55e;
+* {
+  box-sizing: border-box;
 }
 
-* { box-sizing: border-box; }
-html, body {
+body {
+  background: #0d1b2a; /* fondo negro institucional */
+  color: #ffffff;      /* texto blanco */
+  font-family: 'Roboto', sans-serif;
   margin: 0;
-  padding: 0;
-  background: var(--bg);
-  color: var(--text);
-  font-family: system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, 'Helvetica Neue', Arial, sans-serif;
-}
-
-.app-header, .app-footer {
-  text-align: center;
-  padding: 16px;
-  border-bottom: 1px solid #1f2937;
-}
-.app-footer {
-  border-top: 1px solid #1f2937;
-  border-bottom: none;
-  margin-top: 24px;
 }
 
 .container {
-  max-width: 900px;
+  max-width: 960px;
   margin: 0 auto;
   padding: 16px;
-  display: grid;
-  gap: 16px;
 }
+
 .card {
-  background: var(--card);
-  border: 1px solid #1f2937;
+  background: #1b263b; /* tarjetas gris oscuro */
   border-radius: 12px;
   padding: 16px;
-  box-shadow: 0 10px 20px rgba(0,0,0,0.25);
+  margin-bottom: 16px;
 }
 
-h1 { margin: 0; font-size: 1.4rem; }
-h2 { margin: 0 0 12px 0; font-size: 1.1rem; color: var(--text); }
-
-.form-group { margin-bottom: 12px; }
 label {
   display: block;
-  font-size: .9rem;
-  color: var(--muted);
   margin-bottom: 6px;
+  color: #cbd5e1; /* texto secundario */
 }
+
 input {
   width: 100%;
-  padding: 12px;
+  padding: 10px;
   border-radius: 8px;
-  border: 1px solid #334155;
-  background: #0b1220;
-  color: var(--text);
-  outline: none;
+  border: 1px solid #2d3a4d;
+  background: #0b1623;
+  color: #ffffff;
 }
-input::placeholder { color: #64748b; }
 
-button {
-  width: 100%;
-  padding: 12px;
+button#btnEntrar {
+  background: #c62828; /* rojo intenso */
+  color: #fff;
   border: none;
+  padding: 10px 16px;
   border-radius: 8px;
-  background: var(--accent);
-  color: white;
-  font-weight: 600;
   cursor: pointer;
 }
-button:hover { filter: brightness(1.05); }
-button:active { transform: translateY(1px); }
+
+button#btnEntrar:hover {
+  filter: brightness(1.1);
+}
 
 .msg {
   margin-top: 10px;
-  font-size: .9rem;
-  color: var(--muted);
 }
 
-.status {
-  list-style: none;
-  padding: 0;
-  margin: 0;
+.app-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  justify-content: center;
+  padding: 12px;
 }
-.status li {
-  padding: 8px 0;
-  border-top: 1px dashed #1f2937;
+
+.logo {
+  height: 48px;
+  margin: 8px 0;
 }
-.status li:first-child {
-  border-top: none;
+
+.app-footer {
+  text-align: center;
+  padding: 12px;
+  color: #cbd5e1;
 }
