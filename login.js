@@ -1,45 +1,19 @@
-const credenciales = [
-  { user: 'coordinador', pass: 'lempira2025' },
-  { user: 'auditor', pass: 'transparencia' }
-];
-
-function validar(usuario, clave) {
-  const u = credenciales.find(x => x.user === usuario);
-  return !!(u && u.pass === clave);
-}
-
-function mostrar(mensaje, tipo = 'info') {
-  const msg = document.getElementById('msg');
-  if (!msg) return;
-  msg.textContent = mensaje;
-  msg.style.color = tipo === 'ok' ? '#1a7f37' : '#c62828';
-}
-
-function init() {
+document.addEventListener('DOMContentLoaded', () => {
   const btn = document.getElementById('btnEntrar');
-  if (!btn) {
-    console.error('No se encontró el botón btnEntrar');
-    return;
-  }
+  const usuario = document.getElementById('usuario');
+  const clave = document.getElementById('clave');
+  const msg = document.getElementById('msg');
 
-  btn.addEventListener('click', () => {
-    const usuario = document.getElementById('usuario')?.value?.trim();
-    const clave = document.getElementById('clave')?.value;
+  btn.addEventListener('click', (e) => {
+    e.preventDefault();
+    const u = (usuario.value || '').trim().toLowerCase();
+    const c = (clave.value || '').trim();
 
-    if (!usuario || !clave) {
-      mostrar('Ingresa usuario y contraseña.');
-      return;
-    }
-
-    if (validar(usuario, clave)) {
-      mostrar('Acceso concedido. Cargando panel...', 'ok');
-      setTimeout(() => {
-        window.location.href = 'dashboard.html';
-      }, 1200);
+    if (u === 'coordinador' && c === 'lempira2025') {
+      msg.textContent = 'Acceso concedido';
+      window.location.href = 'dashboard.html';
     } else {
-      mostrar('Credenciales incorrectas.');
+      msg.textContent = 'Usuario o contraseña incorrectos';
     }
   });
-}
-
-window.onload = init;
+});
