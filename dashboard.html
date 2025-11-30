@@ -2,24 +2,67 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <title>Panel - Lempira 2025</title>
+  <title>Panel — Plataforma Electoral</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
   <header class="app-header">
-    <h1>Panel de control Lempira 2025</h1>
+    <img src="logo.png" alt="Logo Lempira 2025" class="logo">
+    <h1>Panel de control</h1>
   </header>
 
   <main class="container">
     <section class="card">
-      <h2>Bienvenido, coordinador</h2>
-      <p>Acceso confirmado. Aquí puedes gestionar candidatos, JRVs y auditoría.</p>
+      <h2>Resumen</h2>
+      <ul class="status">
+        <li><strong>Región:</strong> Lempira</li>
+        <li><strong>JRV:</strong> 0 registradas</li>
+        <li><strong>Última actualización:</strong> ahora</li>
+      </ul>
+    </section>
+
+    <section class="card">
+      <h2>Mesas y resultados</h2>
+      <div id="tablero">Cargando datos…</div>
     </section>
   </main>
 
   <footer class="app-footer">
-    <small>Plataforma Electoral • Transparencia garantizada</small>
+    <small>Transparencia y auditoría ciudadana • Libre</small>
   </footer>
+
+  <script>
+  async function cargarDatos() {
+    const [jrvs, candidatos, resultados] = await Promise.all([
+      fetch('data/jrv.json').then(r => r.json()),
+      fetch('data/candidatos.json').then(r => r.json()),
+      fetch('data/resultados.json').then(r => r.json())
+    ]);
+
+    const tablero = document.getElementById('tablero');
+    tablero.innerHTML = '';
+
+    jrvs.forEach(jrv => {
+      const div = document.createElement('div');
+      div.className = 'card';
+      div.innerHTML = `
+        <h3>${jrv.jrv_id} — ${jrv.municipio}</h3>
+        <p><strong>Centro:</strong> ${jrv.centro}</p>
+        <p><strong>Mesario:</strong> ${jrv.mesario}</p>
+        <ul>
+          ${candidatos.map(c => {
+            const votos = resultados.find(r => r.jrv_id === jrv.jrv_id && r.candidato_id === c.id)?.votos || 0;
+            return `<li>${c.nombre}: <strong>${votos}</strong> votos</li>`;
+          }).join('')}
+        </ul>
+      `;
+      tablero.appendChild(div);
+    });
+  }
+
+  cargarDatos();
+  </script>
 </body>
 </html>
