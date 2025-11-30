@@ -2,9 +2,44 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <title>Plataforma Electoral</title>
+  <title>Plataforma Electoral - Lempira 2025</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <h1>Bienvenido a la Plataforma Electoral de Lempira 2025</h1>
+  <header class="app-header">
+    <h1>Bienvenido a la Plataforma Electoral de Lempira 2025</h1>
+  </header>
+
+  <main class="container">
+    <section class="card">
+      <h2>Ingreso maestro</h2>
+      <div class="form-group">
+        <label for="usuario">Usuario</label>
+        <input id="usuario" type="text" placeholder="Ej: coordinador">
+      </div>
+      <div class="form-group">
+        <label for="clave">Contraseña</label>
+        <input id="clave" type="password" placeholder="••••••••">
+      </div>
+      <button id="btnEntrar">Entrar</button>
+      <p id="msg" class="msg"></p>
+    </section>
+
+    <section class="card">
+      <h2>Estado</h2>
+      <ul class="status">
+        <li><strong>Publicación:</strong> Activa en GitHub Pages</li>
+        <li><strong>Región:</strong> Lempira</li>
+        <li><strong>Año:</strong> 2025</li>
+      </ul>
+    </section>
+  </main>
+
+  <footer class="app-footer">
+    <small>Transparencia y auditoría ciudadana • Libre</small>
+  </footer>
+
+  <script src="login.js"></script>
 </body>
 </html>
