@@ -1,3 +1,4 @@
+console.log("Script cargado correctamente");
 const credenciales = [
   { user: 'coordinador', pass: 'lempira2025' },
   { user: 'auditor', pass: 'transparencia' }
