@@ -2,190 +2,76 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <title>Panel - Plataforma Electoral</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css">
+  <title>Plataforma Electoral</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin:20px; }
+    h1 { color:#003366; }
+    table { border-collapse: collapse; width:100%; margin-top:20px; }
+    th, td { border:1px solid #ccc; padding:8px; text-align:center; }
+    th { background:#f0f0f0; }
+    button { margin:10px; padding:10px; }
+  </style>
 </head>
 <body>
-  <header class="app-header">
-    <img src="assets/img/logo.png" alt="Logo">
-    <h1>Panel de control</h1>
-  </header>
-
-  <main class="container">
-    <section class="card">
-      <h2>Resumen</h2>
-      <ul class="status">
-        <li><strong>Región:</strong> Lempira</li>
-        <li><strong>JRV:</strong> 0 registradas</li>
-        <li><strong>Última actualización:</strong> ahora</li>
-      </ul>
-    </section>
-
-    <section class="card">
-      <h2>Mesas y resultados</h2>
-      <div id="tablero">Cargando datos…</div>
-    </section>
-  </main>
-
-  <footer class="app-footer">
-    <small>Transparencia y auditoría ciudadana • Libre</small>
-  </footer>
-
-  <script>
-    async function cargarDatos() {
-      const jrvs = await fetch('data/jrv.json').then(r => r.json());
-      const candidatos = await fetch('data/candidatos.json').then(r => r.json());
-      const resultados = await fetch('data/resultados.json').then(r => r.json());
-
-      const tablero = document.getElementById('tablero');
-      tablero.innerHTML = '';
-
-      jrvs.forEach(jrv => {
-        const div = document.createElement('div');
-        div.className = 'card';
-        div.innerHTML = `
-          <h3>${jrv.jrv_id} — ${jrv.municipio}</h3>
-          <p><strong>Centro:</strong> ${jrv.centro}</p>
-          <p><strong>Mesario:</strong> ${jrv.mesario}</p>
-          <ul>
-            ${candidatos.map(c => {
-              const resultado = resultados.find(r => r.jrv_id === jrv.jrv_id && r.candidato_id === c.id);
-              const votos = resultado?.votos ?? 0;
-              return `<li>${c.nombre}: <strong>${votos}</strong> votos</li>`;
-            }).join('')}
-          </ul>
-        `;
-        tablero.appendChild(div);
-      });
-
-      // Totales por candidato
-      const totales = {};
-      candidatos.forEach(c => totales[c.id] = 0);
-      resultados.forEach(r => {
-        if (totales[r.candidato_id] !== undefined) {
-          totales[r.candidato_id] += r.votos || 0;
-        }
-      });
-
-      const resumen = document.createElement('section');
-      resumen.className = 'card';
-      resumen.innerHTML = `<h2>Totales por candidato</h2><ul>${
-        candidatos.map(c => `<li>${c.nombre}: <strong>${totales[c.id]}</strong> votos</li>`).join('')
-      }</ul>`;
-      tablero.appendChild(resumen);
-    }
-
-    cargarDatos();
-  </script>
-</body>
-</html>
-<!-- Librería jsPDF para exportar a PDF -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <h1>Dashboard Electoral</h1>
+  <div id="panel"></div>
+  <button onclick="exportarResultados()">Exportar Resultados</button>
+  <button onclick="limpiarResultados()">Limpiar Votos</button>
 
 <script>
-  // 1) Digitación: actualizar votos en memoria y refrescar totales
-  function actualizarResultado(jrv_id, candidato_id, valor) {
-    valor = parseInt(valor) || 0;
-    const existente = resultados.find(r => r.jrv_id === jrv_id && r.candidato_id === candidato_id);
-    if (existente) {
-      existente.votos = valor;
-    } else {
-      resultados.push({ jrv_id, candidato_id, votos: valor });
-    }
-    render();
-  }
+let resultados = JSON.parse(localStorage.getItem("resultados")) || {};
 
-  // 2) Exportación CSV: descarga resultados en formato compatible con Excel
-  function exportarCSV() {
-    const visiblesJRV = document.getElementById('filtro').value
-      ? jrvs.filter(j => j.municipio === document.getElementById('filtro').value).map(j => j.jrv_id)
-      : jrvs.map(j => j.jrv_id);
+const candidatos = [
+  {id:"PRES1", nombre:"Presidente A"},
+  {id:"PRES2", nombre:"Presidente B"},
+  {id:"PRES3", nombre:"Presidente C"}
+];
 
-    const filas = ["jrv_id,candidato_id,candidato_nombre,casilla,votos"];
-    resultados.forEach(r => {
-      if (visiblesJRV.includes(r.jrv_id)) {
-        const c = candidatos.find(x => x.id === r.candidato_id) || { nombre: "", casilla: "" };
-        filas.push(`${r.jrv_id},${r.candidato_id},"${c.nombre}",${c.casilla},${r.votos || 0}`);
-      }
+const jrvs = [
+  {jrv_id:"JRV1", nombre:"Mesa 1"},
+  {jrv_id:"JRV2", nombre:"Mesa 2"}
+];
+
+function render(){
+  let html = "<table><tr><th>Mesa</th>";
+  candidatos.forEach(c=> html += `<th>${c.nombre}</th>`);
+  html += "</tr>";
+  jrvs.forEach(jrv=>{
+    html += `<tr><td>${jrv.nombre}</td>`;
+    candidatos.forEach(c=>{
+      let votos = resultados[jrv.jrv_id]?.[c.id] || 0;
+      html += `<td><input type="number" min="0" value="${votos}" 
+        onchange="actualizarResultado('${jrv.jrv_id}','${c.id}',this.value)"></td>`;
     });
-
-    const blob = new Blob([filas.join("\n")], { type: "text/csv" });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement("a");
-    a.href = url;
-    a.download = "resultados.csv";
-    a.click();
-    URL.revokeObjectURL(url);
-  }
-
-  // 3) Exportación PDF: resumen de totales por candidato
-  function exportarPDF() {
-    const { jsPDF } = window.jspdf;
-    const doc = new jsPDF();
-    doc.setFontSize(14);
-    doc.text("Resultados Electorales - Totales por candidato", 10, 10);
-
-    const visiblesJRV = document.getElementById('filtro').value
-      ? jrvs.filter(j => j.municipio === document.getElementById('filtro').value).map(j => j.jrv_id)
-      : jrvs.map(j => j.jrv_id);
-
-    const totales = {};
-    candidatos.forEach(c => totales[c.id] = 0);
-    resultados.forEach(r => {
-      if (visiblesJRV.includes(r.jrv_id)) totales[r.candidato_id] += r.votos || 0;
-    });
-
-    let y = 20;
-    candidatos.forEach(c => {
-      doc.text(`Casilla ${c.casilla} - ${c.nombre}: ${totales[c.id]} votos`, 10, y);
-      y += 10;
-    });
-
-    doc.save("resultados.pdf");
-  }
-
-  // 4) Barra de acciones: botones sin editar el HTML principal
-  function crearBarraAcciones() {
-    const barra = document.createElement('div');
-    barra.style.position = 'sticky';
-    barra.style.top = '0';
-    barra.style.background = '#fff';
-    barra.style.padding = '10px';
-    barra.style.borderBottom = '1px solid #ddd';
-    barra.style.display = 'flex';
-    barra.style.gap = '10px';
-    barra.style.zIndex = '10';
-
-    const bCSV = document.createElement('button');
-    bCSV.textContent = 'Exportar CSV';
-    bCSV.onclick = exportarCSV;
-
-    const bPDF = document.createElement('button');
-    bPDF.textContent = 'Exportar PDF';
-    bPDF.onclick = exportarPDF;
-
-    barra.appendChild(bCSV);
-    barra.appendChild(bPDF);
-
-    const container = document.querySelector('.container') || document.body;
-    container.insertBefore(barra, container.firstChild);
-  }
-
-  // 5) Inyectar campo de digitación en cada candidato (sin tocar tu render existente)
-  // Nota: añade el input dentro del bloque de candidato en tu render usando la función existente.
-  // Si tu render ya muestra candidatos, agrega esta línea al template del candidato:
-  // <input type="number" min="0" value="${votos}" onchange="actualizarResultado('${jrv.jrv_id}','${c.id}',this.value)">
-
-  // 6) Activar la barra de acciones después de cargar datos
-  document.addEventListener('DOMContentLoaded', () => {
-    // Espera a que cargarDatos() haya corrido y renderizado
-    const check = setInterval(() => {
-      if (typeof jrvs !== 'undefined' && jrvs.length) {
-        crearBarraAcciones();
-        clearInterval(check);
-      }
-    }, 300);
+    html += "</tr>";
   });
+  html += "</table>";
+  document.getElementById("panel").innerHTML = html;
+}
+
+function actualizarResultado(jrv_id,candidato_id,votos){
+  if(!resultados[jrv_id]) resultados[jrv_id] = {};
+  resultados[jrv_id][candidato_id] = parseInt(votos)||0;
+  localStorage.setItem("resultados", JSON.stringify(resultados));
+}
+
+function exportarResultados(){
+  const blob = new Blob([JSON.stringify(resultados,null,2)],{type:"application/json"});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = "resultados.json";
+  a.click();
+  URL.revokeObjectURL(url);
+}
+
+function limpiarResultados(){
+  resultados = {};
+  localStorage.removeItem("resultados");
+  render();
+}
+
+render();
 </script>
+</body>
+</html>
