@@ -35,11 +35,9 @@
 
   <script>
   async function cargarDatos() {
-    const [jrvs, candidatos, resultados] = await Promise.all([
-      fetch('data/jrv.json').then(r => r.json()),
-      fetch('data/candidatos.json').then(r => r.json()),
-      fetch('data/resultados.json').then(r => r.json())
-    ]);
+    const jrvs = await fetch('data/jrv.json').then(r => r.json());
+    const candidatos = await fetch('data/candidatos.json').then(r => r.json());
+    const resultados = await fetch('data/resultados.json').then(r => r.json());
 
     const tablero = document.getElementById('tablero');
     tablero.innerHTML = '';
@@ -53,7 +51,8 @@
         <p><strong>Mesario:</strong> ${jrv.mesario}</p>
         <ul>
           ${candidatos.map(c => {
-            const votos = resultados.find(r => r.jrv_id === jrv.jrv_id && r.candidato_id === c.id)?.votos || 0;
+            const resultado = resultados.find(r => r.jrv_id === jrv.jrv_id && r.candidato_id === c.id);
+            const votos = resultado?.votos ?? 0;
             return `<li>${c.nombre}: <strong>${votos}</strong> votos</li>`;
           }).join('')}
         </ul>
