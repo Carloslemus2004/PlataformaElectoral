@@ -1,4 +1,4 @@
 [
-  { "id": "C1", "nombre": "Candidato A", "color": "#c62828" },
-  { "id": "C2", "nombre": "Candidato B", "color": "#cbd5e1" }
+  { "id": "C1", "nombre": "Candidato A" },
+  { "id": "C2", "nombre": "Candidato B" }
 ]
