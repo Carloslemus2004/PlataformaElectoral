@@ -24,9 +24,11 @@ function init() {
       return;
     }
     if (validar(usuario, clave)) {
-      mostrar('Acceso concedido. Cargando panel…', 'ok');
-      // Aquí luego redirigimos al dashboard:
-      // window.location.href = 'dashboard.html';
+  mostrar('Acceso concedido. Cargando panel...', 'ok');
+  setTimeout(() => {
+    window.location.href = 'dashboard.html';
+  }, 600);
+    }
     } else {
       mostrar('Credenciales inválidas.', 'error');
     }
