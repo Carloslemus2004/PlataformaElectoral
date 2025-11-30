@@ -2,28 +2,26 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <title>Plataforma Electoral - Lempira 2025</title>
+  <title>Plataforma Electoral</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
+  <link rel="manifest" href="manifest.json">
 </head>
 <body>
   <header class="app-header">
-    <h1>Bienvenido a la Plataforma Electoral de Lempira 2025</h1>
+    <img src="logo.png" alt="Logo Lempira 2025" class="logo">
+    <h1>Plataforma Electoral</h1>
   </header>
 
   <main class="container">
     <section class="card">
       <h2>Ingreso maestro</h2>
+      <label for="usuario">Usuario</label>
+      <input id="usuario" type="text" placeholder="coordinador">
 
-      <div class="form-group">
-        <label for="usuario">Usuario</label>
-        <input id="usuario" type="text" placeholder="coordinador">
-      </div>
-
-      <div class="form-group">
-        <label for="clave">Contraseña</label>
-        <input id="clave" type="password" placeholder="lempira2025">
-      </div>
+      <label for="clave">Contraseña</label>
+      <input id="clave" type="password" placeholder="lempira2025">
 
       <button id="btnEntrar">Entrar</button>
       <p id="msg" class="msg"></p>
@@ -44,5 +42,10 @@
   </footer>
 
   <script src="login.js"></script>
+  <script>
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('service-worker.js');
+    }
+  </script>
 </body>
 </html>
