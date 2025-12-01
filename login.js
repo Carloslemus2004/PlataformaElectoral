@@ -1,19 +1,10 @@
-document.addEventListener('DOMContentLoaded', () => {
-  const btn = document.getElementById('btnEntrar');
-  const usuario = document.getElementById('usuario');
-  const clave = document.getElementById('clave');
-  const msg = document.getElementById('msg');
+function login() {
+  const usuario = document.getElementById("usuario").value;
+  const clave = document.getElementById("clave").value;
 
-  btn.addEventListener('click', (e) => {
-    e.preventDefault();
-    const u = (usuario.value || '').trim().toLowerCase();
-    const c = (clave.value || '').trim();
-
-    if (u === 'coordinador' && c === 'lempira2025') {
-      msg.textContent = 'Acceso concedido';
-      window.location.href = 'dashboard.html';
-    } else {
-      msg.textContent = 'Usuario o contraseña incorrectos';
-    }
-  });
-});
+  if (usuario === "admin" && clave === "libre2025") {
+    window.location.href = "dashboard.html";
+  } else {
+    alert("Credenciales incorrectas");
+  }
+}

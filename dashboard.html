@@ -2,76 +2,227 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <title>Plataforma Electoral</title>
+  <title>Dashboard Electoral - Lempira</title>
   <style>
-    body { font-family: Arial, sans-serif; margin:20px; }
-    h1 { color:#003366; }
-    table { border-collapse: collapse; width:100%; margin-top:20px; }
-    th, td { border:1px solid #ccc; padding:8px; text-align:center; }
-    th { background:#f0f0f0; }
-    button { margin:10px; padding:10px; }
+    body { font-family: Arial, sans-serif; margin: 20px; }
+    header { display: flex; align-items: center; gap: 20px; }
+    .logo { height: 60px; }
+    h1 { font-size: 24px; }
+    table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+    th, td { border: 1px solid #ccc; padding: 8px; text-align: left; }
+    th { background-color: #f0f0f0; }
+    input[type="number"] { width: 60px; }
+    #controles { margin-top: 20px; display: flex; gap: 20px; align-items: center; flex-wrap: wrap; }
+    #resumen { margin-top: 30px; font-weight: bold; }
   </style>
 </head>
 <body>
-  <h1>Dashboard Electoral</h1>
-  <div id="panel"></div>
-  <button onclick="exportarResultados()">Exportar Resultados</button>
-  <button onclick="limpiarResultados()">Limpiar Votos</button>
+  <header>
+    <img src="assets/img/logo.png" alt="Logo Plataforma" class="logo">
+    <h1>Dashboard Electoral - Departamento de Lempira</h1>
+  </header>
 
-<script>
-let resultados = JSON.parse(localStorage.getItem("resultados")) || {};
+  <section id="controles">
+    <label for="filtroMunicipio">Municipio:</label>
+    <select id="filtroMunicipio"><option value="TODOS">TODOS</option></select>
 
-const candidatos = [
-  {id:"PRES1", nombre:"Presidente A"},
-  {id:"PRES2", nombre:"Presidente B"},
-  {id:"PRES3", nombre:"Presidente C"}
-];
+    <label for="filtroCentro">Centro de Votación:</label>
+    <select id="filtroCentro"><option value="TODOS">TODOS</option></select>
 
-const jrvs = [
-  {jrv_id:"JRV1", nombre:"Mesa 1"},
-  {jrv_id:"JRV2", nombre:"Mesa 2"}
-];
+    <label for="filtroJRV">Mesa (JRV):</label>
+    <select id="filtroJRV"><option value="TODOS">TODOS</option></select>
 
-function render(){
-  let html = "<table><tr><th>Mesa</th>";
-  candidatos.forEach(c=> html += `<th>${c.nombre}</th>`);
-  html += "</tr>";
-  jrvs.forEach(jrv=>{
-    html += `<tr><td>${jrv.nombre}</td>`;
-    candidatos.forEach(c=>{
-      let votos = resultados[jrv.jrv_id]?.[c.id] || 0;
-      html += `<td><input type="number" min="0" value="${votos}" 
-        onchange="actualizarResultado('${jrv.jrv_id}','${c.id}',this.value)"></td>`;
+    <button id="limpiar">Limpiar votos</button>
+    <button id="exportar">Exportar resultados</button>
+  </section>
+
+  <table id="tablaMesas">
+    <thead>
+      <tr>
+        <th>Departamento</th>
+        <th>Municipio</th>
+        <th>Sector</th>
+        <th>Centro de Votación</th>
+        <th>JRV</th>
+        <th>Votos</th>
+      </tr>
+    </thead>
+    <tbody></tbody>
+  </table>
+
+  <div id="resumen">Total de votos: 0</div>
+
+  <script>
+    let datosOriginales = null;
+
+    function cargarDashboard() {
+      fetch('mesas.json')
+        .then(res => res.json())
+        .then(data => {
+          datosOriginales = data;
+          cargarMunicipios(data);
+          renderizarTabla();
+        });
+    }
+
+    function cargarMunicipios(data) {
+      const municipioSelect = document.getElementById('filtroMunicipio');
+      const municipios = [...new Set(data.municipios.map(m => m.nombre))];
+      municipios.forEach(m => {
+        const opt = document.createElement('option');
+        opt.value = m;
+        opt.textContent = m;
+        municipioSelect.appendChild(opt);
+      });
+    }
+
+    function cargarCentros(municipio) {
+      const centroSelect = document.getElementById('filtroCentro');
+      centroSelect.innerHTML = '<option value="TODOS">TODOS</option>';
+      const centros = new Set();
+      datosOriginales.municipios.forEach(m => {
+        if (municipio === 'TODOS' || m.nombre === municipio) {
+          m.mesas.forEach(mesa => centros.add(mesa.centro));
+        }
+      });
+      centros.forEach(c => {
+        const opt = document.createElement('option');
+        opt.value = c;
+        opt.textContent = c;
+        centroSelect.appendChild(opt);
+      });
+    }
+
+    function cargarJRVs(municipio, centro) {
+      const jrvSelect = document.getElementById('filtroJRV');
+      jrvSelect.innerHTML = '<option value="TODOS">TODOS</option>';
+      const jrvs = new Set();
+      datosOriginales.municipios.forEach(m => {
+        if (municipio === 'TODOS' || m.nombre === municipio) {
+          m.mesas.forEach(mesa => {
+            if (centro === 'TODOS' || mesa.centro === centro) {
+              jrvs.add(mesa.jrv);
+            }
+          });
+        }
+      });
+      jrvs.forEach(j => {
+        const opt = document.createElement('option');
+        opt.value = j;
+        opt.textContent = j;
+        jrvSelect.appendChild(opt);
+      });
+    }
+
+    function renderizarTabla() {
+      const municipio = document.getElementById('filtroMunicipio').value;
+      const centro = document.getElementById('filtroCentro').value;
+      const jrv = document.getElementById('filtroJRV').value;
+      const tbody = document.querySelector('#tablaMesas tbody');
+      tbody.innerHTML = '';
+
+      datosOriginales.municipios.forEach(m => {
+        if (municipio === 'TODOS' || m.nombre === municipio) {
+          m.mesas.forEach(mesa => {
+            if ((centro === 'TODOS' || mesa.centro === centro) &&
+                (jrv === 'TODOS' || mesa.jrv.toString() === jrv)) {
+              const fila = document.createElement('tr');
+              fila.innerHTML = `
+                <td>${datosOriginales.departamento}</td>
+                <td>${m.nombre}</td>
+                <td>${mesa.sector}</td>
+                <td>${mesa.centro}</td>
+                <td>${mesa.jrv}</td>
+                <td><input type="number" value="0" min="0" onchange="actualizarTotal()"></td>
+              `;
+              tbody.appendChild(fila);
+            }
+          });
+        }
+      });
+      actualizarTotal();
+    }
+
+    function actualizarTotal() {
+      const inputs = document.querySelectorAll('#tablaMesas input');
+      let total = 0;
+      inputs.forEach(input => {
+        total += parseInt(input.value) || 0;
+      });
+      document.getElementById('resumen').textContent = `Total de votos: ${total}`;
+    }
+
+    document.getElementById('filtroMunicipio').addEventListener('change', () => {
+      const municipio = document.getElementById('filtroMunicipio').value;
+      cargarCentros(municipio);
+      cargarJRVs(municipio, 'TODOS');
+      renderizarTabla();
     });
-    html += "</tr>";
-  });
-  html += "</table>";
-  document.getElementById("panel").innerHTML = html;
-}
 
-function actualizarResultado(jrv_id,candidato_id,votos){
-  if(!resultados[jrv_id]) resultados[jrv_id] = {};
-  resultados[jrv_id][candidato_id] = parseInt(votos)||0;
-  localStorage.setItem("resultados", JSON.stringify(resultados));
-}
+    document.getElementById('filtroCentro').addEventListener('change', () => {
+      const municipio = document.getElementById('filtroMunicipio').value;
+      const centro = document.getElementById('filtroCentro').value;
+      cargarJRVs(municipio, centro);
+      renderizarTabla();
+    });
 
-function exportarResultados(){
-  const blob = new Blob([JSON.stringify(resultados,null,2)],{type:"application/json"});
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement("a");
-  a.href = url;
-  a.download = "resultados.json";
-  a.click();
-  URL.revokeObjectURL(url);
-}
+    document.getElementById('filtroJRV').addEventListener('change', renderizarTabla);
 
-function limpiarResultados(){
-  resultados = {};
-  localStorage.removeItem("resultados");
-  render();
-}
+    document.getElementById('limpiar').addEventListener('click', () => {
+      document.querySelectorAll('#tablaMesas input').forEach(i => i.value = 0);
+      actualizarTotal();
+    });
 
-render();
-</script>
+    document.getElementById('exportar').addEventListener('click', () => {
+      const resultados = [];
+      document.querySelectorAll('#tablaMesas tbody tr').forEach(fila => {
+        const celdas = fila.querySelectorAll('td');
+        const votos = fila.querySelector('input').value;
+        resultados.push({
+          departamento: celdas[0].textContent,
+          municipio: celdas[1].textContent,
+          sector: celdas[2].textContent,
+          centro: celdas[3].textContent,
+          jrv: celdas[4].textContent,
+          votos: votos
+        });
+      });
+      console.log("Exportado:", resultados);
+      alert("Resultados exportados en consola.");
+    });
+
+    cargarDashboard();
+  </script>
+<section id="digitacion">
+  <h2>Digitación por Mesa</h2>
+
+  <label for="mesa">Número de Mesa:</label>
+  <input type="text" id="mesa" required>
+  <button onclick="cargarMesa()">Cargar Papeleta</button>
+
+  <div id="papeleta-container"></div>
+
+  <h3>Resumen de Votos</h3>
+  <label>Votos Válidos:</label>
+  <input type="number" id="votos_validos" readonly>
+  <label>Votos Nulos:</label>
+  <input type="number" id="votos_nulos" value="0">
+  <label>Votos en Blanco:</label>
+  <input type="number" id="votos_blancos" value="0">
+  <label>Total Votos:</label>
+  <input type="number" id="total_votos" readonly>
+
+  <button onclick="guardarResultados()">Guardar Resultados</button>
+</section>
 </body>
 </html>
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,233 @@
+[
+  {
+    "casilla": 1,
+    "nombre": "Mario Rivera",
+    "partido": "Democracia Cristiana",
+    "nivel": "Presidente",
+    "logo": "logo_dc.png"
+  },
+  {
+    "casilla": 2,
+    "nombre": "Rixi Moncada",
+    "partido": "Libre",
+    "nivel": "Presidente",
+    "logo": "logo_libre.png"
+  },
+  {
+    "casilla": 3,
+    "nombre": "Nelson Ávila",
+    "partido": "PINU-SD",
+    "nivel": "Presidente",
+    "logo": "logo_pinu.png"
+  },
+  {
+    "casilla": 4,
+    "nombre": "Salvador Nasralla",
+    "partido": "Partido Liberal",
+    "nivel": "Presidente",
+    "logo": "logo_pl.png"
+  },
+  {
+    "casilla": 5,
+    "nombre": "Nasry Asfura",
+    "partido": "Partido Nacional",
+    "nivel": "Presidente",
+    "logo": "logo_pn.png"
+  }
+]
+{
+  "municipio": "Lepaera",
+  "nivel": "Alcalde",
+  "candidatos": [
+    {
+      "casilla": 1,
+      "nombre": "Candidato Alcalde Democracia Cristiana",
+      "partido": "Democracia Cristiana",
+      "logo": "logo_dc.png"
+    },
+    {
+      "casilla": 2,
+      "nombre": "Felix Pineda Perez",
+      "partido": "Libre",
+      "logo": "logo_libre.png"
+    },
+    {
+      "casilla": 3,
+      "nombre": "Candidato Alcalde PINU-SD",
+      "partido": "PINU-SD",
+      "logo": "logo_pinu.png"
+    },
+    {
+      "casilla": 4,
+      "nombre": "Edmundo Posadas",
+      "partido": "Partido Liberal",
+      "logo": "logo_pl.png"
+    },
+    {
+      "casilla": 5,
+      "nombre": "Nelson Ramirez",
+      "partido": "Partido Nacional",
+      "logo": "logo_pn.png"
+    }
+  ]
+}
+{
+  "nivel": "Diputado",
+  "candidatos": [
+    {
+      "casilla": 1,
+      "nombre": "Adrian Jafet Caceres Tobar",
+      "partido": "Democracia Cristiana",
+      "logo": "logo_dc.png"
+    },
+    {
+      "casilla": 2,
+      "nombre": "Maria Estela Cortez Benitez",
+      "partido": "Democracia Cristiana",
+      "logo": "logo_dc.png"
+    },
+    {
+      "casilla": 3,
+      "nombre": "Linder Evenor Bobadilla Reyes",
+      "partido": "Democracia Cristiana",
+      "logo": "logo_dc.png"
+    },
+    {
+      "casilla": 4,
+      "nombre": "Maria Emerita Reyes",
+      "partido": "Democracia Cristiana",
+      "logo": "logo_dc.png"
+    },
+    {
+      "casilla": 5,
+      "nombre": "Oscar Yovany de Dios Chavez",
+      "partido": "Partido Nacional",
+      "logo": "logo_pn.png"
+    },
+
+    {
+      "casilla": 6,
+      "nombre": "Selvin Octavio Morales Bonilla",
+      "partido": "Libre",
+      "logo": "logo_libre.png"
+    },
+    {
+      "casilla": 7,
+      "nombre": "Dany Leonel Murillo Diaz",
+      "partido": "Libre",
+      "logo": "logo_libre.png"
+    },
+    {
+      "casilla": 8,
+      "nombre": "Josue David Enamorado Madrid",
+      "partido": "Libre",
+      "logo": "logo_libre.png"
+    },
+    {
+      "casilla": 9,
+      "nombre": "Ryna Marisol Vasquez Sanchez",
+      "partido": "Libre",
+      "logo": "logo_libre.png"
+    },
+    {
+      "casilla": 10,
+      "nombre": "Yester Omar Muñoz",
+      "partido": "Libre",
+      "logo": "logo_libre.png"
+    },
+
+    {
+      "casilla": 11,
+      "nombre": "Lucia Santos",
+      "partido": "PINU-SD",
+      "logo": "logo_pinu.png"
+    },
+    {
+      "casilla": 12,
+      "nombre": "Jose Leon",
+      "partido": "PINU-SD",
+      "logo": "logo_pinu.png"
+    },
+    {
+      "casilla": 13,
+      "nombre": "Jesus Quintanilla",
+      "partido": "PINU-SD",
+      "logo": "logo_pinu.png"
+    },
+    {
+      "casilla": 14,
+      "nombre": "Jesus Alvarado",
+      "partido": "PINU-SD",
+      "logo": "logo_pinu.png"
+    },
+    {
+      "casilla": 15,
+      "nombre": "Maria Santos Suate",
+      "partido": "PINU-SD",
+      "logo": "logo_pinu.png"
+    },
+
+    {
+      "casilla": 16,
+      "nombre": "Marco Tulio Rodriguez",
+      "partido": "Partido Liberal",
+      "logo": "logo_pl.png"
+    },
+    {
+      "casilla": 17,
+      "nombre": "Mario Enrique Calix",
+      "partido": "Partido Liberal",
+      "logo": "logo_pl.png"
+    },
+    {
+      "casilla": 18,
+      "nombre": "Wendy Zuniga",
+      "partido": "Partido Liberal",
+      "logo": "logo_pl.png"
+    },
+    {
+      "casilla": 19,
+      "nombre": "Jose Muñoz",
+      "partido": "Partido Liberal",
+      "logo": "logo_pl.png"
+    },
+    {
+      "casilla": 20,
+      "nombre": "Andrea del Cid",
+      "partido": "Partido Liberal",
+      "logo": "logo_pl.png"
+    },
+
+    {
+      "casilla": 21,
+      "nombre": "Wilson Pineda",
+      "partido": "Partido Nacional",
+      "logo": "logo_pn.png"
+    },
+    {
+      "casilla": 22,
+      "nombre": "Lenin Valeriano",
+      "partido": "Partido Nacional",
+      "logo": "logo_pn.png"
+    },
+    {
+      "casilla": 23,
+      "nombre": "Steffany Rosa",
+      "partido": "Partido Nacional",
+      "logo": "logo_pn.png"
+    },
+    {
+      "casilla": 24,
+      "nombre": "Abraham Alvarenga",
+      "partido": "Partido Nacional",
+      "logo": "logo_pn.png"
+    },
+    {
+      "casilla": 25,
+      "nombre": "Jose Virgilio Garcia",
+      "partido": "Partido Nacional",
+      "logo": "logo_pn.png"
+    }
+  ]
+}
+

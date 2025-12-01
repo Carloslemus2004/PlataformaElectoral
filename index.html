@@ -2,65 +2,15 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <title>Plataforma Electoral</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css">
-  <link rel="manifest" href="manifest.json">
+  <title>Ingreso Maestro</title>
 </head>
 <body>
-  <header class="app-header">
-    <img src="logo.png" alt="Logo Lempira 2025" class="logo">
-    <h1>Plataforma Electoral</h1>
-  </header>
-
-  <main class="container">
-    <section class="card">
-      <h2>Ingreso maestro</h2>
-      <label for="usuario">Usuario</label>
-      <input id="usuario" type="text" placeholder="coordinador">
-
-      <label for="clave">Contraseña</label>
-      <input id="clave" type="password" placeholder="lempira2025">
-
-      <button id="btnEntrar">Entrar</button>
-      <p id="msg" class="msg"></p>
-    </section>
-
-    <section class="card">
-      <h2>Estado</h2>
-      <ul class="status">
-        <li><strong>Publicación:</strong> Activa en GitHub Pages</li>
-        <li><strong>Región:</strong> Lempira</li>
-        <li><strong>Año:</strong> 2025</li>
-      </ul>
-    </section>
-  </main>
-
-  <footer class="app-footer">
-    <small>Transparencia y auditoría ciudadana • Libre</small>
-  </footer>
-
+  <section id="login">
+    <h2>Ingreso Maestro</h2>
+    <input type="text" id="usuario" placeholder="Usuario">
+    <input type="password" id="clave" placeholder="Contraseña">
+    <button onclick="login()">Entrar</button>
+  </section>
   <script src="login.js"></script>
-  <script>
-    if ('serviceWorker' in navigator) {
-      navigator.serviceWorker.register('service-worker.js');
-    }
-  </script>
-</body>
-</html>
-<!DOCTYPE html>
-<html lang="es">
-<head>
-  <meta charset="UTF-8">
-  <title>Plataforma Electoral Lempira 2025</title>
-  <link rel="stylesheet" href="style.css">
-</head>
-<body>
-  <header>
-    <h1>Plataforma Electoral Lempira 2025</h1>
-    <p>Digitación, visualización y validación de resultados por mesa</p>
-    <a href="dashboard.html" class="btn">Ir al Dashboard</a>
-  </header>
 </body>
 </html>
